@@ -1,0 +1,6 @@
+Running task ID: 1, iterating from 25 to 50
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:02<00:07,  2.59s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:05<00:05,  2.81s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:10<00:03,  3.80s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:11<00:00,  2.71s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:11<00:00,  2.89s/it]
+Using cuda
+Evaluating from 25 to 50
+Evaluating: 0it [00:00, ?it/s]Evaluating: 4it [1:07:34, 1013.65s/it]Evaluating: 8it [2:15:01, 1012.59s/it]Evaluating: 12it [3:22:29, 1012.26s/it]Evaluating: 16it [4:29:58, 1012.28s/it]Evaluating: 20it [5:37:28, 1012.38s/it]Evaluating: 24it [6:45:02, 1012.69s/it]Evaluating: 25it [7:14:22, 1093.65s/it]Evaluating: 25it [7:14:22, 1042.50s/it]
+Finished evaluation
