@@ -1,1 +1,4 @@
 ./out/
+./data/
+./checkpoints/
+./chess_checkpoints/
