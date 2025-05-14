@@ -21,4 +21,4 @@ end=$(((i+1)*25))
 echo "Running task ID: $i, iterating from $begin to $end"
 
 
-python infer.py --config_file ./configs/eval.yaml --start_index $begin --stop_index $end
+python infer.py --config_file ./configs/eval.yaml --start_index $begin --stop_index $end --checkpoint_path "./checkpoints/all_rank_16_alpha_16_epoch_3/" --save_dir "./out/all_r16_e3/"

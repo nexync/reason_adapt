@@ -1,0 +1,13 @@
+default:
+  naive: False
+  tune_model_path: "../models/llama3-8b-r1/"
+  base_model_path: "../models/llama3-8b/"
+  checkpoint_path: "./checkpoints/mlp_rank_16/alpha_16/"
+  adapter_path: "./checkpoints/adapter.pt"
+  lora_ratio: 1.0
+  reason_ratio: 1.0
+  tokenizer_path: "../models/llama3-8b-r1/"
+  dataset_path: "./data/sara/"
+  use_cuda: True
+  batch_size: 4
+  save_dir: "./out/mlp_r16_a16/"

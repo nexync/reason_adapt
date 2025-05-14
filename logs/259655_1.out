@@ -1,0 +1,10 @@
+Running task ID: 1, iterating from 20 to 40
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.08s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  1.76s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  1.81s/it]
+Using cuda
+Save path of ./out/chess/all_r16_a8/run1/res_20_40.pkl
+Traceback (most recent call last):
+  File "/weka/scratch/bvandur1/jeffc/adapt_reason/infer.py", line 241, in <module>
+    main()
+  File "/weka/scratch/bvandur1/jeffc/adapt_reason/infer.py", line 201, in main
+    if len(input_batch) == args.batch_size or i+1 == len(cases):
+UnboundLocalError: local variable 'i' referenced before assignment

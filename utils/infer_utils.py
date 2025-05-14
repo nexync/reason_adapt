@@ -153,7 +153,6 @@ def run_inference_forced(cases: List[Dict], statutes: str, config: Config) -> Li
 	
 	return cases
 
-
 def save_results(cases: List[Dict], output_path: str):
 	"""Save results to JSON file."""
 	os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -162,6 +161,97 @@ def save_results(cases: List[Dict], output_path: str):
 			json.dump(cases, f, indent=2)
 	except Exception as e:
 		raise RuntimeError(f"Error saving results: {str(e)}")
+
+
+def format_chess_prompt(fen, move):
+	assistant = "white" if fen.split(" ")[1] == "b" else "black"
+	user = "black" if assistant == "white" else "white"
+
+	return ("Forsyth-Edwards Notation (FEN) is a standard notation for describing a particular board position of a chess game. The purpose of FEN is to provide all the necessary information to restart a game from a particular position. "
+			"A FEN record defines a particular game position, all in one text line and using only the ASCII character set.\n\n"
+			"A FEN record contains six fields, each separated by a space. The fields are as follows:\n\n"
+			"1. Piece placement data: Each rank is described, starting with rank 8 and ending with rank 1, with a '/' between each one; within each rank, the contents of the squares are described in order from the a-file to the h-file. Each piece is identified by a single letter taken from the standard English names in algebraic notation (pawn = 'P', knight = 'N', bishop = 'B', rook = 'R', queen = 'Q' and king = 'K'). White pieces are designated using uppercase letters ('PNBRQK'), while black pieces use lowercase letters ('pnbrqk'). A set of one or more consecutive empty squares within a rank is denoted by a digit from '1' to '8', corresponding to the number of squares.\n"
+			"2. Active color: 'w' means that White is to move; 'b' means that Black is to move.\n"
+			"3. Castling availability: If neither side has the ability to castle, this field uses the character '-'. Otherwise, this field contains one or more letters: 'K' if White can castle kingside, 'Q' if White can castle queenside, 'k' if Black can castle kingside, and 'q' if Black can castle queenside. A situation that temporarily prevents castling does not prevent the use of this notation.\n"
+			"4. En passant target square: This is a square over which a pawn has just passed while moving two squares; it is given in algebraic notation. If there is no en passant target square, this field uses the character '-'. This is recorded regardless of whether there is a pawn in position to capture en passant. An updated version of the spec has since made it so the target square is recorded only if a legal en passant capture is possible, but the old version of the standard is the one most commonly used.\n"
+			"5. Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.\n"
+			"6. Fullmove number: The number of the full moves. It starts at 1 and is incremented after Black's move.\n\n"
+			"Below are two examples of FEN notation. Here is the FEN for the starting position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\n"
+			"And after the move 1. e4: rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1\n\n"
+			f"The current board position is given by {fen}."
+			f"In this position, {user} just made the move {move}, indicating that the piece on {move[:2]} moved to {move[2:]}. What is the best response as {assistant}?"
+			"Indicate your response in the same notation with \\boxed{}.")
+
+def parse_fen(fen):
+	pos = fen.split(" ")[0]
+	
+	p2s = defaultdict(lambda: [])
+	s2p = defaultdict(lambda: "")
+
+	for r, rank in enumerate(pos.split("/")):
+		f = 0
+		for piece in rank:
+			if piece.isdigit():
+				f += int(piece)
+			else:
+				square = chr(97+f) + str(8-r)
+				s2p[square] = piece
+				p2s[piece].append(square)
+
+	return p2s, s2p
+
+def explain_fen(fen, move):
+	pos = fen.split(" ")[0]
+	res = []
+	i = 8
+
+	if move is not None:
+		start, end = move[:2], move[2:]
+		spiece = None
+		epiece = None
+
+	piece_dict = {
+		"q": "queen",
+		"k": "king",
+		"p": "pawn",
+		"b": "bishop",
+		"r": "rook",
+		"n": "knight",
+	}
+
+	res.append("Let's understand the position by considering each rank.")
+	for rank in pos.split("/"):
+		res.append(f"Rank {i} is given by {rank}.")
+		f = 0
+		for piece in rank:
+			if piece.isdigit():
+				for j in range(int(piece)):
+					res.append(chr(97+f+j)+str(i)+" is empty.")
+				f += int(piece)
+			else:
+				color = "white" if piece.isupper() else "black"
+				piece = piece_dict[piece.lower()]
+				res.append(f"There is a {color} {piece} on " + chr(97+f) + str(i) + ".")
+				f += 1
+
+				if start in res[-1]:
+					spiece = [color, piece]
+				if end in res[-1]:
+					epiece = [color, piece]
+
+		assert f == 8
+		i -= 1
+	
+	if move is not None:
+		s = f"{spiece[0].capitalize()} just moved their {spiece[1]} from {start}"	 
+		if epiece is None:
+			s += f" to {end}."
+		else:
+			s += f", taking the {epiece[0]} {epiece[1]} on {end}."
+
+		res.append(s)
+		
+	return " ".join(res)
 
 def main():
 	config = parse_args()

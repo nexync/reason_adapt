@@ -1,0 +1,5 @@
+Running task ID: 4, iterating from 80 to 100
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.35s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.21s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.23s/it]
+Using cuda
+Save path of ./out/chess/all_r16_a8/run1/res_80_100.pkl
+Finished evaluation

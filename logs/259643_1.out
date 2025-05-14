@@ -1,0 +1,12 @@
+Running task ID: 1, iterating from 20 to 40
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:05<00:05,  5.86s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:09<00:00,  4.77s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:09<00:00,  4.93s/it]
+Using cuda
+Save path of ./out/chess/all_r16_a8/run1/res_20_40.pkl
+Traceback (most recent call last):
+  File "/weka/scratch/bvandur1/jeffc/adapt_reason/infer.py", line 241, in <module>
+    main()
+  File "/weka/scratch/bvandur1/jeffc/adapt_reason/infer.py", line 194, in main
+    model_prompt += explain_fen(item["FEN"], item["Moves"].split(" ")[0])
+  File "/weka/scratch/bvandur1/jeffc/adapt_reason/utils/infer_utils.py", line 252, in explain_fen
+    s += f", taking the {epiece[0]} {epiece[1]} on {end}."
+TypeError: 'NoneType' object is not subscriptable

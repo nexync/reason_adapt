@@ -2,11 +2,12 @@ default:
   naive: False
   tune_model_path: "../models/llama3-8b-r1/"
   base_model_path: "../models/llama3-8b/"
-  checkpoint_path: "./out/checkpoint-27/"
-  adapter_path: "./out/adapter.pt"
-  lam_ratio: 0.5
+  checkpoint_path: ""
+  adapter_path: "./checkpoints/adapter.pt"
+  reason_ratio: 1.0
   tokenizer_path: "../models/llama3-8b-r1/"
   dataset_path: "./data/sara/"
+  eval_dataset: "sara"
   use_cuda: True
   batch_size: 4
-  save_dir: "./out/run4"
+  save_dir: ""

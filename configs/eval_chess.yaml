@@ -1,0 +1,10 @@
+default:
+  naive: True
+  tune_model_path: "../models/llama3-8b-r1/"
+  base_model_path: "../models/llama3-8b/"
+  tokenizer_path: "../models/llama3-8b-r1/"
+  dataset_path: "./data/lichess/test_indices.pkl"
+  eval_dataset: "chess"
+  use_cuda: True
+  batch_size: 4
+  save_dir: ""
